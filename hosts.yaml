@@ -10,4 +10,3 @@
 - name: testnode2
   ip: 10.10.90.122                      
   node: true
-

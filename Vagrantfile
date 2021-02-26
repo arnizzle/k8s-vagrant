@@ -21,18 +21,18 @@ Vagrant.configure(2) do |config|
       if host['master']
         node.vm.provider "virtualbox" do |v|
           v.name = host['name']
-          v.memory = 2000
-          v.cpus = 2
+          v.memory = cfg['mastermemory']
+          v.cpus = cfg['mastercpu']
         end
 
-        node.vm.provision "shell", path: "bootstrap_kmaster.sh", env: {"MASTERNAME" => cfg['mastername'], "CIDR" => host['cidr'], "MASTERIP" => cfg['masterip'], "MASTERDOMAIN" => cfg['domain'] }
+        node.vm.provision "shell", path: "bootstrap_kmaster.sh", env: {"MASTERNAME" => cfg['mastername'], "CIDR" => host['cidr'], "MASTERIP" => cfg['masterip'], "MASTERDOMAIN" => cfg['domain'], "CALICO_VERSION" => cfg['calico_version'] }
       end
 
       if host['node']
         node.vm.provider "virtualbox" do |v|
           v.name = host['name']
-          v.memory = 3000
-          v.cpus = 2
+          v.memory = cfg['nodememory']
+          v.cpus = cfg['nodecpu']
         end
 
         node.vm.provision "shell", path: "bootstrap_kworker.sh", env: {"MASTERNAME" => cfg['mastername'], "MASTERIP" => cfg['masterip']}
