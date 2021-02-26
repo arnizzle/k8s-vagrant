@@ -1,23 +1,9 @@
 #!/bin/bash
 
-MASTERIP=10.10.90.100
-MASTERNAME=master
-
-NODE1IP=10.10.90.101
-NODE1NAME=node1
-
-NODE2IP=10.10.90.102
-NODE2NAME=node2
-
-FULLDOMAIN=example.com
-
-
 # Update hosts file
 echo "[TASK 1] Update /etc/hosts file"
 cat >>/etc/hosts<<EOF
-$MASTERIP $MASTERNAME.$FULLDOMAIN
-$NODE1IP $NODE1NAME.$FULLDOMAIN
-$NODE2IP $NODE2NAME.$FULLDOMAIN
+$MASTERIP	$MASTERFQDN
 EOF
 
 echo "[TASK 2] Install docker container engine"
@@ -79,7 +65,6 @@ systemctl restart sshd
 # Set Root password
 echo "[TASK 12] Set root password"
 echo -e "kubeadmin\nkubeadmin" | passwd root
-#echo "kubeadmin" | passwd --stdin root >/dev/null 2>&1
 
 # Update vagrant user's bashrc file
 echo "export TERM=xterm" >> /etc/bashrc

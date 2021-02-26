@@ -15,9 +15,8 @@ Vagrant.configure(2) do |config|
 
     config.vm.define host['name'] do |node|
       node.vm.box = "bento/ubuntu-18.04"
-      node.vm.hostname = host['fqdn']
+      node.vm.hostname = host['name']
       node.vm.network "public_network", ip: host['ip'], netmask: cfg['netmask'], bridge: cfg['bridge']
-#      node.vm.network "public_network", ip: "10.10.90.100", netmask: cfg['netmask'], bridge: cfg['bridge']
 
       if host['master']
         node.vm.provider "virtualbox" do |v|
@@ -26,7 +25,7 @@ Vagrant.configure(2) do |config|
           v.cpus = 2
         end
 
-        node.vm.provision "shell", path: "bootstrap_kmaster.sh", env: {"HOSTIP" => host['ip'], "CIDR" => host['cidr']}
+        node.vm.provision "shell", path: "bootstrap_kmaster.sh", env: {"HOSTIP" => host['ip'], "CIDR" => host['cidr'], "MASTERFQDN" => cfg['masterfqdn'], "MASTERIP" => cfg['masterip'], "MASTERDOMAIN" => cfg['domain'] }
       end
 
       if host['node']
@@ -36,8 +35,7 @@ Vagrant.configure(2) do |config|
           v.cpus = 2
         end
 
-        node.vm.provision "shell", path: "bootstrap_kworker.sh", env: {"MASTERFQDN" => cfg['masterfqdn'], "MASTERIP" => cfg['masterip']}
-
+        node.vm.provision "shell", path: "bootstrap_kworker.sh", env: {"MASTERFQDN" => cfg['masterfqdn'], "MASTERIP" => cfg['masterip'], "MASTERDOMAIN" => cfg['domain'] }
       end
 
     end
