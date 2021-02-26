@@ -1,20 +1,13 @@
 - name: testmaster
   ip: 10.10.90.120
-  netmask: 16
-  bridge: eno1
   master: true
   cidr: 192.168.0.0/16
 
 - name: testnode1
   ip: 10.10.90.121
-  netmask: 16
-  bridge: eno1
   node: true
-  masterfqdn: testmaster.example.com
 
 - name: testnode2
   ip: 10.10.90.122                      
-  netmask: 16
-  bridge: eno1
   node: true
-  masterfqdn: testmaster.example.com
+

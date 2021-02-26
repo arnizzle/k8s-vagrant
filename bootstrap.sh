@@ -3,7 +3,7 @@
 # Update hosts file
 echo "[TASK 1] Update /etc/hosts file"
 cat >>/etc/hosts<<EOF
-$MASTERIP	$MASTERFQDN
+$MASTERIP $MASTERNAME
 EOF
 
 echo "[TASK 2] Install docker container engine"
@@ -20,6 +20,8 @@ usermod -aG docker vagrant
 echo "[TASK 3] Enable and start docker service"
 systemctl enable docker >/dev/null 2>&1
 systemctl start docker
+
+
 
 # Add sysctl settings
 echo "[TASK 6] Add sysctl settings"
@@ -40,6 +42,7 @@ apt-get update && apt-get install -y apt-transport-https curl
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
 # Add he kubernetes sources list into the sources.list directory
+
 cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF

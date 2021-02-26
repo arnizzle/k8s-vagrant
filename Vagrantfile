@@ -9,7 +9,7 @@ cfg = YAML.load_file("config.yaml")
 
 Vagrant.configure(2) do |config|
 
-  config.vm.provision "shell", path: "bootstrap.sh", env: {"MYVAR" => "value"}
+  config.vm.provision "shell", path: "bootstrap.sh", env: {"MASTERNAME" => cfg['mastername'], "MASTERIP" => cfg['masterip']}
 
   hosts.each do |host|
 
@@ -25,7 +25,7 @@ Vagrant.configure(2) do |config|
           v.cpus = 2
         end
 
-        node.vm.provision "shell", path: "bootstrap_kmaster.sh", env: {"HOSTIP" => host['ip'], "CIDR" => host['cidr'], "MASTERFQDN" => cfg['masterfqdn'], "MASTERIP" => cfg['masterip'], "MASTERDOMAIN" => cfg['domain'] }
+        node.vm.provision "shell", path: "bootstrap_kmaster.sh", env: {"MASTERNAME" => cfg['mastername'], "CIDR" => host['cidr'], "MASTERIP" => cfg['masterip'], "MASTERDOMAIN" => cfg['domain'] }
       end
 
       if host['node']
@@ -35,7 +35,7 @@ Vagrant.configure(2) do |config|
           v.cpus = 2
         end
 
-        node.vm.provision "shell", path: "bootstrap_kworker.sh", env: {"MASTERFQDN" => cfg['masterfqdn'], "MASTERIP" => cfg['masterip'], "MASTERDOMAIN" => cfg['domain'] }
+        node.vm.provision "shell", path: "bootstrap_kworker.sh", env: {"MASTERNAME" => cfg['mastername'], "MASTERIP" => cfg['masterip']}
       end
 
     end

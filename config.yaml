@@ -1,6 +1,5 @@
+mastername: testmaster
 domain: example.com
 netmask: 16
 bridge: eno1
 masterip: 10.10.90.120
-nodes: 2
-
