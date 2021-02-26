@@ -1,0 +1,18 @@
+- name: testmaster
+  fqdn: testmaster.example.com
+  ip: 10.10.90.120
+  domain: example.com
+  netmask: 16
+  bridge: eno1
+  master: true
+  cidr: 192.168.0.0/16
+
+- name: testnode1
+  fqdn: testnode1.example.com
+  ip: 10.10.90.121
+  domain: example.com
+  netmask: 16
+  bridge: eno1
+  node: true
+  masterfqdn: testmaster.example.com
+
