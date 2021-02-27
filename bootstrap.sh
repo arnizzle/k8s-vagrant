@@ -1,10 +1,15 @@
 #!/bin/bash
 
 # Update hosts file
-echo "[TASK 1] Update /etc/hosts file"
+echo "[TASK 1] Update /etc/hosts file and /etc/default/kubelet"
 cat >>/etc/hosts<<EOF
-$MASTERIP $MASTERNAME
+$MASTERIP		$MASTERNAME
 EOF
+
+cat >>/etc/default/kubelet<<EOF
+KUBELET_EXTRA_ARGS=--node-ip=$NODEIP
+EOF
+
 
 echo "[TASK 2] Install docker container engine"
 apt-get install apt-transport-https ca-certificates curl software-properties-common -y
@@ -20,8 +25,6 @@ usermod -aG docker vagrant
 echo "[TASK 3] Enable and start docker service"
 systemctl enable docker >/dev/null 2>&1
 systemctl start docker
-
-
 
 # Add sysctl settings
 echo "[TASK 6] Add sysctl settings"
@@ -82,8 +85,5 @@ alias kcd='export KUBECONFIG=~/.kube/k8s-dev.config'
 alias kcp='export KUBECONFIG=~/.kube/k8s-prod.config'
 alias kgc='kubectl config get-contexts'
 export dry='--dry-run=client'
-export oy='-o yaml'
 EOF
 
-
-echo $MYVAR >> /tmp/myvar

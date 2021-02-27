@@ -18,4 +18,6 @@ su - vagrant -c "kubectl create -f https://docs.projectcalico.org/$CALICO_VERSIO
 
 # Generate Cluster join command
 echo "[TASK 4] Generate and save cluster join command to /joincluster.sh"
-kubeadm token create --print-join-command > /joincluster.sh
+kubeadm token create --print-join-command > /vagrant/joincluster.sh
+chmod +x /vagrant/joincluster.sh
+

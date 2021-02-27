@@ -9,9 +9,11 @@ cfg = YAML.load_file("config.yaml")
 
 Vagrant.configure(2) do |config|
 
-  config.vm.provision "shell", path: "bootstrap.sh", env: {"MASTERNAME" => cfg['mastername'], "MASTERIP" => cfg['masterip']}
+#  config.vm.provision "shell", path: "bootstrap.sh", env: {"MASTERNAME" => cfg['mastername'], "MASTERIP" => cfg['masterip'], "NODEIP" => host['ip']}
 
   hosts.each do |host|
+
+    config.vm.provision "shell", path: "bootstrap.sh", env: {"MASTERNAME" => cfg['mastername'], "MASTERIP" => cfg['masterip'], "NODEIP" => host['ip']}
 
     config.vm.define host['name'] do |node|
       node.vm.box = "bento/ubuntu-18.04"
@@ -25,19 +27,21 @@ Vagrant.configure(2) do |config|
           v.cpus = cfg['mastercpu']
         end
 
-        node.vm.provision "shell", path: "bootstrap_kmaster.sh", env: {"MASTERNAME" => cfg['mastername'], "CIDR" => host['cidr'], "MASTERIP" => cfg['masterip'], "MASTERDOMAIN" => cfg['domain'], "CALICO_VERSION" => cfg['calico_version'] }
+        node.vm.provision "shell", path: "bootstrap_kmaster.sh", env: {"MASTERNAME" => cfg['mastername'], "HOSTIP" => host['ip'], "CIDR" => host['cidr'], "MASTERIP" => cfg['masterip'], "MASTERDOMAIN" => cfg['domain'], "CALICO_VERSION" => cfg['calico_version'] }
       end
 
       if host['node']
+
         node.vm.provider "virtualbox" do |v|
           v.name = host['name']
           v.memory = cfg['nodememory']
           v.cpus = cfg['nodecpu']
         end
 
-        node.vm.provision "shell", path: "bootstrap_kworker.sh", env: {"MASTERNAME" => cfg['mastername'], "MASTERIP" => cfg['masterip']}
+        node.vm.provision "shell", path: "bootstrap_kworker.sh", env: {"MASTERNAME" => cfg['mastername']  } 
       end
 
     end
   end
 end
+
