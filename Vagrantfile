@@ -9,14 +9,12 @@ cfg = YAML.load_file("config.yaml")
 
 Vagrant.configure(2) do |config|
 
-#  config.vm.provision "shell", path: "bootstrap.sh", env: {"MASTERNAME" => cfg['mastername'], "MASTERIP" => cfg['masterip'], "NODEIP" => host['ip']}
-
   hosts.each do |host|
 
     config.vm.provision "shell", path: "bootstrap.sh", env: {"MASTERNAME" => cfg['mastername'], "MASTERIP" => cfg['masterip'], "NODEIP" => host['ip']}
 
     config.vm.define host['name'] do |node|
-      node.vm.box = "bento/ubuntu-18.04"
+      node.vm.box = cfg['image']
       node.vm.hostname = host['name']
       node.vm.network "public_network", ip: host['ip'], netmask: cfg['netmask'], bridge: cfg['bridge']
 

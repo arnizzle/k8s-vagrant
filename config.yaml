@@ -1,23 +1,29 @@
 mastername: testmaster
-
 domain: example.com
 
 netmask: 16
-
 bridge: eno1			# Bridge interface. If this doesn't work remove it from Vagrantfile. Vagrnat will ask for available interfaces. Simply replace them here.
-
 masterip: 10.10.90.120		# Master IP
 
-calico_version: v3.10
+calico_version: v3.18
 # Latest version as of deployment: check https://www.projectcalico.org/category/new-releases
 
-image: bento/ubuntu-18.04	# Tested bento/ubuntu-18.04, bento/ubuntu-20.04
+# nodecount: 2
 
-nodecount: 2
+# CPU/Memory settings
+# Don't go below 2K for master, this will fail
 
-mastermemory: 2000		# Don't go below 2K, this will fail
+mastermemory: 2048
+
 mastercpu: 2
 
 nodememory: 2500
 nodecpu: 2
 
+
+# Select Linux image
+# Checked versions: 
+# - bento/ubuntu-18.04
+# - bento/ubuntu-20.04
+
+image: bento/ubuntu-20.04

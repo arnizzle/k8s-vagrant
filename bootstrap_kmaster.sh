@@ -14,6 +14,7 @@ chown -R vagrant:vagrant /home/vagrant/.kube
 # Deploy flannel network
 echo "[TASK 3] Deploy Calico network"
 
+#su - vagrant -c "kubectl create -f https://docs.projectcalico.org/$CALICO_VERSION/manifests/calico.yaml"
 su - vagrant -c "kubectl create -f https://docs.projectcalico.org/$CALICO_VERSION/manifests/calico.yaml"
 
 # Generate Cluster join command
