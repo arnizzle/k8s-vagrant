@@ -1,13 +1,12 @@
-- name: dev-master
+- name: kmaster
   ip: 10.10.90.120
   master: true
   cidr: 192.168.0.0/16
 
-- name: dev-node1
+- name: knode1
   ip: 10.10.90.121
   node: true
 
-- name: dev-node2
-  ip: 10.10.90.122
+- name: knode2
+  ip: 10.10.90.122                      
   node: true
-

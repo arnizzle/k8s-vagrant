@@ -3,13 +3,13 @@
 # Join worker nodes to the Kubernetes cluster
 
 echo "[TASK 1] Join node to Kubernetes Cluster"
+echo /vagrant/hosts >> /etc/hosts
 apt-get  install -y sshpass >/dev/null 2>&1
 
 # sshpass -p "kubeadmin" scp -o StrictHostKeyChecking=no $MASTERNAME:/joincluster.sh /joincluster.sh
 
-echo $MASTERNAME >> /tmp/master
+# Manually adding IP address since setup sometimes doesn't show INTERNAL_IP
 
-# scp -o StrictHostKeyChecking=no $MASTERNAME:/joincluster.sh /joincluster.sh
-#sshpass -p "vagrant" scp -o StrictHostKeyChecking=no vagrant@$MASTERNAME:/joincluster.sh joincluster.sh
+cp /vagrant/joincluster.sh /tmp
 
-bash /vagrant/joincluster.sh >/dev/null 2>&1
+bash /tmp/joincluster.sh >/dev/null 2>&1

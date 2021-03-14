@@ -36,7 +36,7 @@ Vagrant.configure(2) do |config|
           v.cpus = cfg['nodecpu']
         end
 
-        node.vm.provision "shell", path: "bootstrap_kworker.sh", env: {"MASTERNAME" => cfg['mastername']  } 
+        node.vm.provision "shell", path: "bootstrap_kworker.sh", env: {"MASTERNAME" => cfg['mastername'], "HOSTIP" => host['ip']  } 
       end
 
     end

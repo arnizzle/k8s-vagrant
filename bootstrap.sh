@@ -1,15 +1,10 @@
 #!/bin/bash
 
-# Update hosts file
+# Update kubelet info
+# Kind of dirty fix since INTERNAL_IP is not showing up for some reason
+
 echo "[TASK 1] Update /etc/hosts file and /etc/default/kubelet"
-cat >>/etc/hosts<<EOF
-$MASTERIP		$MASTERNAME
-EOF
-
-cat >>/etc/default/kubelet<<EOF
-KUBELET_EXTRA_ARGS=--node-ip=$NODEIP
-EOF
-
+# Fix
 
 echo "[TASK 2] Install docker container engine"
 apt-get install apt-transport-https ca-certificates curl software-properties-common -y
@@ -44,7 +39,7 @@ echo "[TASK 8] Installing apt-transport-https pkg"
 apt-get update && apt-get install -y apt-transport-https curl
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 
-# Add he kubernetes sources list into the sources.list directory
+# Add the kubernetes sources list into the sources.list directory
 
 cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 deb https://apt.kubernetes.io/ kubernetes-xenial main
@@ -60,6 +55,9 @@ apt-get install -y kubelet kubeadm kubectl
 
 # Start and Enable kubelet service
 echo "[TASK 10] Enable and start kubelet service"
+
+echo "Environment=\"KUBELET_EXTRA_ARGS=--node-ip=$NODEIP\"" >> /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
 systemctl enable kubelet >/dev/null 2>&1
 systemctl start kubelet >/dev/null 2>&1
 
